@@ -13,8 +13,8 @@ import styles from "./Emojinator.module.css";
 
 export default function Emojinator() {
   // Background color
-  const [bgColor, setBgColor] = useState("#E8A230");
-  const [customColor, setCustomColor] = useState("#E8A230");
+  const [bgColor, setBgColor] = useState("#F0C020");
+  const [customColor, setCustomColor] = useState("#F0C020");
   const [isCustomBg, setIsCustomBg] = useState(false);
   const [gradientEnabled, setGradientEnabled] = useState(false);
   const [gradientColor2, setGradientColor2] = useState("#FF6B35");
@@ -35,7 +35,6 @@ export default function Emojinator() {
   const [customFilename, setCustomFilename] = useState("");
 
   const exportRef = useRef<HTMLCanvasElement>(null);
-  const previewRef = useRef<HTMLCanvasElement>(null);
   const actualRef = useRef<HTMLCanvasElement>(null);
   const filenameRef = useRef<HTMLInputElement>(null);
   const bottomTextRef = useRef<HTMLInputElement>(null);
@@ -75,7 +74,6 @@ export default function Emojinator() {
     };
     if (exportRef.current) drawEmoji(exportRef.current, { ...params, size });
     if (actualRef.current) drawEmoji(actualRef.current, { ...params, size });
-    if (previewRef.current) drawEmoji(previewRef.current, { ...params, size: 280 });
   }, [activeBgColor, activeFontColor, topText, bottomText, size, currentFont, gradientEnabled, gradientColor2, fontsLoaded]);
 
   useEffect(() => {
@@ -155,7 +153,7 @@ export default function Emojinator() {
         </div>
 
         <div className={styles.previewColumn}>
-          <Preview previewRef={previewRef} actualRef={actualRef} size={size} />
+          <Preview actualRef={actualRef} size={size} />
 
           <DownloadSection
             filenameRef={filenameRef}

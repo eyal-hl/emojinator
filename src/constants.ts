@@ -12,7 +12,7 @@ export const GOOGLE_FONTS: Font[] = [
 ];
 
 export const COLOR_PALETTE: ColorOption[] = [
-  { color: "#E8A230", name: "Slack Yellow" },
+  { color: "#F0C020", name: "Slack Yellow" },
   { color: "#E74C3C", name: "Red" },
   { color: "#E91E63", name: "Pink" },
   { color: "#FF6B35", name: "Orange" },

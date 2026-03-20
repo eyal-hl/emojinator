@@ -39,10 +39,10 @@ export function drawEmoji(
 
   if (!topText && !bottomText) return;
 
-  const padding = size * 0.08;
+  const padding = size * 0.12;
   const maxWidth = size - padding * 2;
-  const maxFontSize = size * 0.38;
-  const lineGap = size * 0.04;
+  const maxFontSize = size * 0.28;
+  const lineGap = size * 0.05;
 
   ctx.fillStyle = fontColor;
   ctx.textAlign = "center";
@@ -52,7 +52,8 @@ export function drawEmoji(
     const topSize = fitText(ctx, topText, maxWidth, maxFontSize, fontFamily, fontWeight);
     const bottomSize = fitText(ctx, bottomText, maxWidth, maxFontSize, fontFamily, fontWeight);
     const totalHeight = topSize + bottomSize + lineGap;
-    const startY = (size - totalHeight) / 2 + topSize / 2;
+    const verticalOffset = size * 0.03;
+    const startY = (size - totalHeight) / 2 + topSize / 2 + verticalOffset;
 
     ctx.font = `${fontWeight} ${topSize}px "${fontFamily}", sans-serif`;
     ctx.fillText(topText, size / 2, startY);
@@ -61,7 +62,7 @@ export function drawEmoji(
     ctx.fillText(bottomText, size / 2, startY + topSize / 2 + lineGap + bottomSize / 2);
   } else {
     const text = topText || bottomText;
-    const fontSize = fitText(ctx, text, maxWidth, size * 0.5, fontFamily, fontWeight);
+    const fontSize = fitText(ctx, text, maxWidth, size * 0.38, fontFamily, fontWeight);
     ctx.font = `${fontWeight} ${fontSize}px "${fontFamily}", sans-serif`;
     ctx.fillText(text, size / 2, size / 2);
   }
