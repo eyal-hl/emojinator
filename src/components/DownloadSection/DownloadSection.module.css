@@ -1,0 +1,43 @@
+.filenameRow {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-family: monospace;
+  font-size: 13px;
+}
+
+.filenameInput {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: #f0ede6;
+  font-family: monospace;
+  font-size: 13px;
+  padding: 6px 10px;
+  width: 160px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.extension {
+  opacity: 0.35;
+}
+
+.downloadBtn {
+  padding: 12px 36px;
+  border-radius: 8px;
+  border: none;
+  background: linear-gradient(135deg, #e8a230, #ff6b35);
+  color: #000;
+  font-size: 16px;
+  font-weight: 800;
+  cursor: pointer;
+  transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 4px 20px rgba(232, 162, 48, 0.3);
+  letter-spacing: 0.02em;
+}
+
+.downloadBtn:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 28px rgba(232, 162, 48, 0.5);
+}
