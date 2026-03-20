@@ -14,8 +14,6 @@ export interface SizeOption {
   label: string;
 }
 
-export type TextAlign = "left" | "center" | "right";
-
 export interface DrawEmojiParams {
   bgColor: string;
   fontColor: string;
@@ -24,9 +22,6 @@ export interface DrawEmojiParams {
   size: number;
   fontFamily: string;
   fontWeight: string;
-  textAlign: TextAlign;
-  strokeEnabled: boolean;
-  strokeColor: string;
   gradientEnabled: boolean;
   gradientColor2: string;
 }

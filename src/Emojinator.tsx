@@ -1,12 +1,10 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import type { TextAlign } from "./types";
 import { GOOGLE_FONTS } from "./constants";
 import { generateFilename } from "./utils/transliterate";
 import { drawEmoji } from "./utils/canvas";
 import ColorPicker from "./components/ColorPicker";
 import FontColorPicker from "./components/FontColorPicker";
 import TextInputs from "./components/TextInputs";
-import TextOptions from "./components/TextOptions";
 import FontPicker from "./components/FontPicker";
 import SizePicker from "./components/SizePicker";
 import Preview from "./components/Preview";
@@ -29,11 +27,6 @@ export default function Emojinator() {
   // Text
   const [topText, setTopText] = useState("תודה");
   const [bottomText, setBottomText] = useState("אייל");
-
-  // Text options
-  const [textAlign, setTextAlign] = useState<TextAlign>("center");
-  const [strokeEnabled, setStrokeEnabled] = useState(false);
-  const [strokeColor, setStrokeColor] = useState("#ffffff");
 
   // Other
   const [size, setSize] = useState(128);
@@ -77,20 +70,13 @@ export default function Emojinator() {
       bottomText,
       fontFamily: currentFont.name,
       fontWeight: currentFont.weight,
-      textAlign,
-      strokeEnabled,
-      strokeColor,
       gradientEnabled,
       gradientColor2,
     };
     if (exportRef.current) drawEmoji(exportRef.current, { ...params, size });
     if (actualRef.current) drawEmoji(actualRef.current, { ...params, size });
     if (previewRef.current) drawEmoji(previewRef.current, { ...params, size: 280 });
-  }, [
-    activeBgColor, activeFontColor, topText, bottomText, size, currentFont,
-    textAlign, strokeEnabled, strokeColor, gradientEnabled, gradientColor2,
-    fontsLoaded,
-  ]);
+  }, [activeBgColor, activeFontColor, topText, bottomText, size, currentFont, gradientEnabled, gradientColor2, fontsLoaded]);
 
   useEffect(() => {
     redraw();
@@ -161,15 +147,6 @@ export default function Emojinator() {
             onBottomChange={setBottomText}
             bottomTextRef={bottomTextRef}
             onBottomTextKeyDown={handleBottomTextKeyDown}
-          />
-
-          <TextOptions
-            textAlign={textAlign}
-            strokeEnabled={strokeEnabled}
-            strokeColor={strokeColor}
-            onAlignChange={setTextAlign}
-            onStrokeToggle={() => setStrokeEnabled((v) => !v)}
-            onStrokeColorChange={setStrokeColor}
           />
 
           <FontPicker fontIndex={fontIndex} onFontChange={setFontIndex} />

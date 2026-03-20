@@ -1,4 +1,4 @@
-import type { DrawEmojiParams, TextAlign } from "../types";
+import type { DrawEmojiParams } from "../types";
 
 function fitText(
   ctx: CanvasRenderingContext2D,
@@ -17,36 +17,9 @@ function fitText(
   return size;
 }
 
-function getTextX(align: TextAlign, size: number, padding: number): number {
-  if (align === "left") return padding;
-  if (align === "right") return size - padding;
-  return size / 2;
-}
-
-function drawText(
-  ctx: CanvasRenderingContext2D,
-  text: string,
-  x: number,
-  y: number,
-  fontSize: number,
-  strokeEnabled: boolean,
-  strokeColor: string
-): void {
-  if (strokeEnabled) {
-    ctx.strokeStyle = strokeColor;
-    ctx.lineWidth = Math.max(1, fontSize * 0.1);
-    ctx.lineJoin = "round";
-    ctx.strokeText(text, x, y);
-  }
-  ctx.fillText(text, x, y);
-}
-
 export function drawEmoji(
   canvas: HTMLCanvasElement,
-  {
-    bgColor, fontColor, topText, bottomText, size, fontFamily, fontWeight,
-    textAlign, strokeEnabled, strokeColor, gradientEnabled, gradientColor2,
-  }: DrawEmojiParams
+  { bgColor, fontColor, topText, bottomText, size, fontFamily, fontWeight, gradientEnabled, gradientColor2 }: DrawEmojiParams
 ): void {
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
@@ -54,7 +27,6 @@ export function drawEmoji(
   canvas.width = size;
   canvas.height = size;
 
-  // Background (solid or gradient)
   if (gradientEnabled) {
     const gradient = ctx.createLinearGradient(0, 0, size, size);
     gradient.addColorStop(0, bgColor);
@@ -71,10 +43,9 @@ export function drawEmoji(
   const maxWidth = size - padding * 2;
   const maxFontSize = size * 0.38;
   const lineGap = size * 0.04;
-  const x = getTextX(textAlign, size, padding);
 
   ctx.fillStyle = fontColor;
-  ctx.textAlign = textAlign;
+  ctx.textAlign = "center";
   ctx.textBaseline = "middle";
 
   if (topText && bottomText) {
@@ -84,14 +55,14 @@ export function drawEmoji(
     const startY = (size - totalHeight) / 2 + topSize / 2;
 
     ctx.font = `${fontWeight} ${topSize}px "${fontFamily}", sans-serif`;
-    drawText(ctx, topText, x, startY, topSize, strokeEnabled, strokeColor);
+    ctx.fillText(topText, size / 2, startY);
 
     ctx.font = `${fontWeight} ${bottomSize}px "${fontFamily}", sans-serif`;
-    drawText(ctx, bottomText, x, startY + topSize / 2 + lineGap + bottomSize / 2, bottomSize, strokeEnabled, strokeColor);
+    ctx.fillText(bottomText, size / 2, startY + topSize / 2 + lineGap + bottomSize / 2);
   } else {
     const text = topText || bottomText;
     const fontSize = fitText(ctx, text, maxWidth, size * 0.5, fontFamily, fontWeight);
     ctx.font = `${fontWeight} ${fontSize}px "${fontFamily}", sans-serif`;
-    drawText(ctx, text, x, size / 2, fontSize, strokeEnabled, strokeColor);
+    ctx.fillText(text, size / 2, size / 2);
   }
 }
