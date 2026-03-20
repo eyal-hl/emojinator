@@ -6,22 +6,30 @@ interface Props {
   bgColor: string;
   isCustom: boolean;
   customColor: string;
+  gradientEnabled: boolean;
+  gradientColor2: string;
   onPaletteClick: (color: string) => void;
   onCustomClick: () => void;
   onCustomColorChange: (color: string) => void;
+  onGradientToggle: () => void;
+  onGradientColor2Change: (color: string) => void;
 }
 
 export default function ColorPicker({
   bgColor,
   isCustom,
   customColor,
+  gradientEnabled,
+  gradientColor2,
   onPaletteClick,
   onCustomClick,
   onCustomColorChange,
+  onGradientToggle,
+  onGradientColor2Change,
 }: Props) {
   return (
     <fieldset className={shared.fieldset}>
-      <legend className={shared.legend}>Color</legend>
+      <legend className={shared.legend}>Background</legend>
       <div className={styles.swatchGrid}>
         {COLOR_PALETTE.map((c) => (
           <button
@@ -55,6 +63,27 @@ export default function ColorPicker({
             />
           )}
         </div>
+      </div>
+
+      <div className={styles.gradientRow}>
+        <button
+          onClick={onGradientToggle}
+          className={`${styles.gradientToggle} ${gradientEnabled ? styles.active : ""}`}
+        >
+          Gradient
+        </button>
+        {gradientEnabled && (
+          <>
+            <span className={styles.gradientArrow}>→</span>
+            <input
+              type="color"
+              value={gradientColor2}
+              onChange={(e) => onGradientColor2Change(e.target.value)}
+              className={styles.gradientColorInput}
+              title="Gradient end color"
+            />
+          </>
+        )}
       </div>
     </fieldset>
   );

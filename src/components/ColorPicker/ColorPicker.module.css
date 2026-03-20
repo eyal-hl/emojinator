@@ -43,3 +43,46 @@
   cursor: pointer;
   padding: 0;
 }
+
+.gradientRow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.gradientToggle {
+  padding: 4px 10px;
+  border-radius: 6px;
+  border: none;
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.5);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 600;
+  transition: all 0.15s;
+  outline: none;
+}
+
+.gradientToggle.active {
+  background: rgba(232, 162, 48, 0.25);
+  color: #e8a230;
+  outline: 1px solid rgba(232, 162, 48, 0.4);
+}
+
+.gradientArrow {
+  font-size: 12px;
+  opacity: 0.4;
+}
+
+.gradientColorInput {
+  width: 32px;
+  height: 26px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 6px;
+  background: none;
+  cursor: pointer;
+  padding: 2px;
+}

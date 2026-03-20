@@ -23,8 +23,13 @@
   opacity: 0.35;
 }
 
+.btnRow {
+  display: flex;
+  gap: 8px;
+}
+
 .downloadBtn {
-  padding: 12px 36px;
+  padding: 12px 28px;
   border-radius: 8px;
   border: none;
   background: linear-gradient(135deg, #e8a230, #ff6b35);
@@ -40,4 +45,27 @@
 .downloadBtn:hover {
   transform: scale(1.05);
   box-shadow: 0 6px 28px rgba(232, 162, 48, 0.5);
+}
+
+.copyBtn {
+  padding: 12px 20px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+
+.copyBtn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.copyBtn.copied {
+  border-color: rgba(46, 204, 113, 0.5);
+  color: #2ecc71;
+  background: rgba(46, 204, 113, 0.1);
 }
