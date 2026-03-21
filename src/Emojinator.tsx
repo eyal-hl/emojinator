@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect, useCallback } from "react";
+import { pickRandomName } from "./names";
 import { GOOGLE_FONTS } from "./constants";
 import { generateFilename } from "./utils/transliterate";
 import { drawEmoji } from "./utils/canvas";
@@ -26,7 +27,7 @@ export default function Emojinator() {
 
   // Text
   const [topText, setTopText] = useState("תודה");
-  const [bottomText, setBottomText] = useState("אייל");
+  const [bottomText, setBottomText] = useState(pickRandomName);
 
   // Other
   const [size, setSize] = useState(128);
