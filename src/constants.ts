@@ -1,6 +1,7 @@
 import type { Font, ColorOption, SizeOption } from "./types";
 
 export const GOOGLE_FONTS: Font[] = [
+  { name: "David Libre", weight: "700", label: "David" },
   { name: "Heebo", weight: "900", label: "Heebo Black" },
   { name: "Rubik", weight: "700", label: "Rubik Bold" },
   { name: "Assistant", weight: "800", label: "Assistant ExtraBold" },

@@ -37,6 +37,21 @@ export default function DownloadSection({
     });
   };
 
+  const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Backspace") {
+      e.preventDefault();
+      const input = filenameRef.current;
+      if (!input) return;
+      const start = input.selectionStart ?? input.value.length;
+      const end = input.selectionEnd ?? input.value.length;
+      const newValue = input.value.slice(0, start) + "-" + input.value.slice(end);
+      onFilenameChange(newValue);
+      requestAnimationFrame(() => input.setSelectionRange(start + 1, start + 1));
+    } else {
+      onFilenameKeyDown(e);
+    }
+  };
+
   return (
     <>
       <div className={styles.filenameRow}>
@@ -45,7 +60,7 @@ export default function DownloadSection({
           type="text"
           value={customFilename}
           onChange={(e) => onFilenameChange(e.target.value)}
-          onKeyDown={onFilenameKeyDown}
+          onKeyDown={handleKeyDown}
           placeholder={autoFilename}
           className={styles.filenameInput}
           dir="ltr"
