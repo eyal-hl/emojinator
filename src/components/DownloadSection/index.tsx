@@ -38,7 +38,7 @@ export default function DownloadSection({
   };
 
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Backspace") {
+    if (e.key === " ") {
       e.preventDefault();
       const input = filenameRef.current;
       if (!input) return;
