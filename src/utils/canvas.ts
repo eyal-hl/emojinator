@@ -17,9 +17,19 @@ function fitText(
   return size;
 }
 
+function getLines(text: string): string[] {
+  const raw = text.split("\n");
+  // Trim leading and trailing empty lines
+  let start = 0;
+  let end = raw.length - 1;
+  while (start <= end && !raw[start].trim()) start++;
+  while (end >= start && !raw[end].trim()) end--;
+  return raw.slice(start, end + 1);
+}
+
 export function drawEmoji(
   canvas: HTMLCanvasElement,
-  { bgColor, fontColor, topText, bottomText, size, fontFamily, fontWeight, gradientEnabled, gradientColor2 }: DrawEmojiParams
+  { bgColor, fontColor, text, size, fontFamily, fontWeight, gradientEnabled, gradientColor2 }: DrawEmojiParams
 ): void {
   const ctx = canvas.getContext("2d");
   if (!ctx) return;
@@ -37,32 +47,34 @@ export function drawEmoji(
   }
   ctx.fillRect(0, 0, size, size);
 
-  if (!topText && !bottomText) return;
+  const lines = getLines(text);
+  if (lines.length === 0) return;
 
   const padding = size * 0.04;
   const maxWidth = size - padding * 2;
-  const maxFontSize = size * 0.44;
   const lineGap = size * 0.03;
+  const availableHeight = size - padding * 2 - lineGap * (lines.length - 1);
+  const maxFontSize = Math.min(availableHeight / lines.length, size * 0.44);
 
   ctx.fillStyle = fontColor;
   ctx.textAlign = "center";
   ctx.textBaseline = "top";
 
-  if (topText && bottomText) {
-    const topSize = fitText(ctx, topText, maxWidth, maxFontSize, fontFamily, fontWeight);
-    const bottomSize = fitText(ctx, bottomText, maxWidth, maxFontSize, fontFamily, fontWeight);
-    const totalHeight = topSize + bottomSize + lineGap;
-    const startY = (size - totalHeight) / 2;
+  // Each line gets its own font size; blank lines use maxFontSize as spacer height
+  const sizes = lines.map((line) =>
+    line.trim()
+      ? fitText(ctx, line, maxWidth, maxFontSize, fontFamily, fontWeight)
+      : maxFontSize
+  );
 
-    ctx.font = `${fontWeight} ${topSize}px "${fontFamily}", sans-serif`;
-    ctx.fillText(topText, size / 2, startY);
+  const totalHeight = sizes.reduce((sum, s) => sum + s, 0) + lineGap * (lines.length - 1);
+  let y = (size - totalHeight) / 2;
 
-    ctx.font = `${fontWeight} ${bottomSize}px "${fontFamily}", sans-serif`;
-    ctx.fillText(bottomText, size / 2, startY + topSize + lineGap);
-  } else {
-    const text = topText || bottomText;
-    const fontSize = fitText(ctx, text, maxWidth, size * 0.50, fontFamily, fontWeight);
-    ctx.font = `${fontWeight} ${fontSize}px "${fontFamily}", sans-serif`;
-    ctx.fillText(text, size / 2, (size - fontSize) / 2);
-  }
+  lines.forEach((line, i) => {
+    if (line.trim()) {
+      ctx.font = `${fontWeight} ${sizes[i]}px "${fontFamily}", sans-serif`;
+      ctx.fillText(line, size / 2, y);
+    }
+    y += sizes[i] + lineGap;
+  });
 }

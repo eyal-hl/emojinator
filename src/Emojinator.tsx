@@ -1,11 +1,11 @@
 import { useState, useRef, useEffect, useCallback } from "react";
-import { pickRandomName } from "./names";
 import { GOOGLE_FONTS } from "./constants";
 import { generateFilename } from "./utils/transliterate";
 import { drawEmoji } from "./utils/canvas";
+import { pickRandomName } from "./names";
 import ColorPicker from "./components/ColorPicker";
 import FontColorPicker from "./components/FontColorPicker";
-import TextInputs from "./components/TextInputs";
+import TextArea from "./components/TextArea";
 import FontPicker from "./components/FontPicker";
 import SizePicker from "./components/SizePicker";
 import Preview from "./components/Preview";
@@ -26,8 +26,7 @@ export default function Emojinator() {
   const [isCustomFont, setIsCustomFont] = useState(false);
 
   // Text
-  const [topText, setTopText] = useState("תודה");
-  const [bottomText, setBottomText] = useState(pickRandomName);
+  const [text, setText] = useState(() => `תודה\n${pickRandomName()}`);
 
   // Other
   const [size, setSize] = useState(128);
@@ -38,7 +37,7 @@ export default function Emojinator() {
   const exportRef = useRef<HTMLCanvasElement>(null);
   const actualRef = useRef<HTMLCanvasElement>(null);
   const filenameRef = useRef<HTMLInputElement>(null);
-  const bottomTextRef = useRef<HTMLInputElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   // Load Google Fonts
   useEffect(() => {
@@ -66,8 +65,7 @@ export default function Emojinator() {
     const params = {
       bgColor: activeBgColor,
       fontColor: activeFontColor,
-      topText,
-      bottomText,
+      text,
       fontFamily: currentFont.name,
       fontWeight: currentFont.weight,
       gradientEnabled,
@@ -75,13 +73,13 @@ export default function Emojinator() {
     };
     if (exportRef.current) drawEmoji(exportRef.current, { ...params, size });
     if (actualRef.current) drawEmoji(actualRef.current, { ...params, size });
-  }, [activeBgColor, activeFontColor, topText, bottomText, size, currentFont, gradientEnabled, gradientColor2, fontsLoaded]);
+  }, [activeBgColor, activeFontColor, text, size, currentFont, gradientEnabled, gradientColor2, fontsLoaded]);
 
   useEffect(() => {
     redraw();
   }, [redraw]);
 
-  const autoFilename = generateFilename(topText, bottomText);
+  const autoFilename = generateFilename(text);
   const finalFilename = customFilename.trim()
     ? customFilename.trim().replace(/\.png$/i, "")
     : autoFilename;
@@ -94,17 +92,19 @@ export default function Emojinator() {
     link.click();
   };
 
-  const handleBottomTextKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  // Tab from textarea → filename
+  const handleTextareaKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Tab" && !e.shiftKey) {
       e.preventDefault();
       filenameRef.current?.focus();
     }
   };
 
+  // Shift+Tab from filename → textarea
   const handleFilenameKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Tab" && e.shiftKey) {
       e.preventDefault();
-      bottomTextRef.current?.focus();
+      textareaRef.current?.focus();
     }
   };
 
@@ -139,13 +139,11 @@ export default function Emojinator() {
             onCustomColorChange={setCustomFontColor}
           />
 
-          <TextInputs
-            topText={topText}
-            bottomText={bottomText}
-            onTopChange={setTopText}
-            onBottomChange={setBottomText}
-            bottomTextRef={bottomTextRef}
-            onBottomTextKeyDown={handleBottomTextKeyDown}
+          <TextArea
+            text={text}
+            textareaRef={textareaRef}
+            onChange={setText}
+            onKeyDown={handleTextareaKeyDown}
           />
 
           <FontPicker fontIndex={fontIndex} onFontChange={setFontIndex} />

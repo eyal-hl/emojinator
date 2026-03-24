@@ -17,8 +17,7 @@ export interface SizeOption {
 export interface DrawEmojiParams {
   bgColor: string;
   fontColor: string;
-  topText: string;
-  bottomText: string;
+  text: string;
   size: number;
   fontFamily: string;
   fontWeight: string;

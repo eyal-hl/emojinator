@@ -16,11 +16,8 @@ export function transliterate(text: string): string {
     .replace(/^-|-$/g, "");
 }
 
-export function generateFilename(topText: string, bottomText: string): string {
-  const top = transliterate(topText.trim());
-  const bottom = transliterate(bottomText.trim());
-  if (top && bottom) return `${top}-${bottom}`;
-  if (top) return top;
-  if (bottom) return bottom;
-  return "emoji";
+export function generateFilename(text: string): string {
+  const firstLine = text.split("\n").find((l) => l.trim()) ?? "";
+  const firstWord = firstLine.trim().split(/\s+/)[0] ?? "";
+  return transliterate(firstWord) || "emoji";
 }
